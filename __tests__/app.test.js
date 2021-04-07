@@ -55,4 +55,30 @@ describe('Plant-Store Routes', () => {
       color: 'green and white',
     });
   });
+
+  it.skip('PUT/UPDATE plant by its :id', async () => {
+    const res = await request(app).put('/api/v1/plants/1').send({
+      // id: '1',
+      plantName: 'hosta',
+      size: 'medium',
+      color: 'green and white',
+    });
+
+    expect(res.body).toEqual({
+      // id: '1',
+      plantName: 'hosta',
+      size: 'large',
+      color: 'green and white',
+    });
+  });
+
+  it('DELETE plant by its :id', async () => {
+    const res = await request(app).delete('/api/v1/plants/1');
+    expect(res.body).toEqual({
+      id: '1',
+      plantName: 'hosta',
+      size: 'medium',
+      color: 'green and white',
+    });
+  });
 });
