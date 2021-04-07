@@ -10,12 +10,8 @@ describe('Plant-Store Routes', () => {
     return setup(pool);
   });
 
-  it('POST ROUTE to add a plant to the list', async () => {
-    const response = await request(app)
-      .post('/api/v1/plants')
-      .send({ plant_name: 'hosta', size: 'medium', color: 'green and white' });
-
-    expect(response.body).toEqual({
+  beforeEach(async () => {
+    plant = await Plant.insert({
       id: '1',
       plantName: 'hosta',
       size: 'medium',
@@ -23,19 +19,40 @@ describe('Plant-Store Routes', () => {
     });
   });
 
-  it.skip('GET ROUTE for a list of plants', async () => {
-    const plants = await Promise.all([
-      Plant.insert({
-        plant_name: 'hosta',
+  it('POST ROUTE to add a plant to the list', async () => {
+    const response = await request(app)
+      .post('/api/v1/plants')
+      .send({ plantName: 'hosta', size: 'medium', color: 'green and white' });
+
+    expect(response.body).toEqual({
+      id: '2',
+      plantName: 'hosta',
+      size: 'medium',
+      color: 'green and white',
+    });
+  });
+
+  it('GET ROUTE for plants', async () => {
+    const res = await request(app).get('/api/v1/plants');
+
+    expect(res.body).toEqual([
+      {
+        id: '1',
+        plantName: 'hosta',
         size: 'medium',
         color: 'green and white',
-      }),
+      },
     ]);
+  });
 
-    return request(app)
-      .get('/api/v1/plants')
-      .then((res) => {
-        expect(res.body).toEqual(expect.arrayContaining(plants));
-      });
+  it('GET BY ID plant by its id', async () => {
+    const res = await request(app).get('/api/v1/plants/1');
+
+    expect(res.body).toEqual({
+      id: '1',
+      plantName: 'hosta',
+      size: 'medium',
+      color: 'green and white',
+    });
   });
 });
