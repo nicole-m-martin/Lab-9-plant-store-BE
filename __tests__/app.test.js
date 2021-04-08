@@ -56,16 +56,16 @@ describe('Plant-Store Routes', () => {
     });
   });
 
-  it.skip('PUT/UPDATE plant by its :id', async () => {
+  it('PUT/UPDATE plant by its :id', async () => {
     const res = await request(app).put('/api/v1/plants/1').send({
-      // id: '1',
-      plantName: 'hosta',
-      size: 'medium',
+      id: '1',
+      plant_name: 'hosta',
+      size: 'large',
       color: 'green and white',
     });
 
     expect(res.body).toEqual({
-      // id: '1',
+      id: '1',
       plantName: 'hosta',
       size: 'large',
       color: 'green and white',
